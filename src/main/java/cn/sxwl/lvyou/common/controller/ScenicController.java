@@ -6,13 +6,19 @@ import cn.sxwl.lvyou.common.entity.ResponseEntity;
 import cn.sxwl.lvyou.common.entity.Scenic;
 import cn.sxwl.lvyou.common.service.ScenicService;
 import cn.sxwl.lvyou.common.service.UserService;
+import cn.sxwl.lvyou.common.util.HttpUtils;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ScenicController {
@@ -98,6 +104,10 @@ public class ScenicController {
         mav.getModel().put("cityId",cityId);
         mav.setViewName("/user/scenicSingle");
         return mav;
+    }
+    @GetMapping(value = "/user/getWeather")
+    public ResponseEntity getWeather(String cityId){
+       return scenicService.getWeather(cityId);
     }
 
 }
