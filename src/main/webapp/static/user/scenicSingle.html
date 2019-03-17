@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<title>Single</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- font-awesome icons -->
+<link href="/static/css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+<!-- //font-awesome icons -->
+<!-- js -->
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<!-- //js -->
+ <script src='/static/js/okzoom.js'></script>
+  <script>
+    $(function(){
+      $('#example').okzoom({
+        width: 150,
+        height: 150,
+        border: "1px solid black",
+        shadow: "0 0 5px #000"
+      });
+    });
+  </script>
+
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="/static/js/move-top.js"></script>
+<script type="text/javascript" src="/static/js/easing.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<script type="text/javascript">
+	var ajaxQingqiu = function(sid){
+		$.ajax({
+                url:'ajaxSingle',
+                type:'get',
+                dataType:'json',
+                data:{'sid':sid},
+                success:function(data){
+                  tr='<h6>周围景点</h6>';
+                 // alert(JSON.stringify(data.data.sstudent));
+                  ss1=data.data.sstudent;
+                  	sp1=data.data.sprice;
+                  	if (data.data.sstudent==0) {ss1='免费';}
+                  	if (data.data.sstudent==-1) {ss1='无学生票';}
+                  	if (data.data.sprice==0) {sp1='免费';}
+                  tt='<div class="agileinfo_single"><h5>'+ data.data.sname+'</h5><div class="col-md-4 agileinfo_single_left"><img id="example" src="__STATIC__/images/'+data.data.simg+'" alt=" " class="img-responsive" /></div><div class="col-md-8 agileinfo_single_right"><div class="snipcart-item block"><div class="snipcart-thumb agileinfo_single_right_snipcart"><h4>学生:'+ss1+'|成人:'+sp1+'</h4></div><div class="snipcart-thumb agileinfo_single_right_snipcart"><h4>地址：'+data.data.saddress+'</h4></div> <div class="snipcart-details agileinfo_single_right_details"><button class="btn btn-danger my-cart-btn hvr-sweep-to-right" onclick="ajaxCart('+data.data.sid+',1)">Add to Cart</button></div><div class="w3agile_description"><h4>评论 :</h4><p>'+data.data.scomment+'</p></div></div></div><div class="clearfix"> </div></div>';
+                    if(data.data.saddress.indexOf("绍兴") >= 0 ) {
+                        getWeather("1246");
+                    }else if(data.data.saddress.indexOf("杭州") >= 0){
+                        getWeather("1185");
+                    }else if(data.data.saddress.indexOf("宁波") >= 0){
+                        getWeather("1208");
+                    }
+                  $.each(data.list,function(key,val){
+                  	ss=val.sstudent;
+                  	sp=val.sprice;
+                  	if (val.sstudent==0) {ss='免费';}
+                  	if (val.sstudent==-1) {ss='无学生票';}
+                  	if (val.sprice==0) {sp='免费';}	
+                    tr+= '<div class="col-md-3 top_brand_left"><div><div class="agile_top_brand_left_grid"><div class="agile_top_brand_left_grid1"><figure><div class="snipcart-item block" ><div ><a href="javascript:ajaxQingqiu('+val.sid+')"><img height="175px" title=" " alt=" " src="__STATIC__/images/'+val.simg+'"/></a>	<p>'+val.sname+'</p><h4>学生:'+ss+'|成人:'+sp+'</h4>	</div><div class="snipcart-details top_brand_home_details"><button class="btn btn-danger my-cart-btn hvr-sweep-to-right" onclick="ajaxCart('+val.sid+',1)">Add to Cart</button></div></div></figure></div></div></div></div>';});
+
+
+                    tr+='<div class="clearfix"> </div>';
+                  $('#zwjd').html(tr);
+                 $('#singleJD').html(tt);
+                  //$("#result2").html(data.page2);
+
+
+                  
+                  }})
+	};
+	$(function () {
+        $.ajax({
+            url:"/user/getWeather",
+            type:'get',
+            dataType:'json',
+            data:{"cityId":$('#cityId').val()},
+            success:function (data) {
+               city=  data.data.data.city.pname+data.data.data.city.name;
+               condition= data.data.data.condition.condition;
+               temp= data.data.data.condition.temp;
+               time= data.data.data.condition.updatetime;
+               $('#city').html("位置:"+city);
+               $('#condition').html("状态:"+condition);
+               $('#temp').html("气温:"+temp+"度");
+               $('#updatetime').html("获取时间:"+time);
+            }
+        })
+    });
+</script>
+<!-- start-smoth-scrolling -->
+	<script type="text/javascript">
+		$(function () {
+            $('#title').load('/static/user/title.html');
+        })
+	</script>
+</head>
+	
+<body>
+<!-- header -->
+<div id="title">
+
+</div>
+
+	<div class="products-breadcrumb">
+		<div class="container">
+			<ul>
+				<li><i class="fa fa-home" aria-hidden="true"></i><a href="index">首页</a><span>|</span></li>
+				<li>商品详情</li>
+			</ul>
+		</div>
+	</div>
+<!-- //products-breadcrumb -->
+<!-- banner -->
+	<div class="banner">
+		    <div class="w3l_banner_nav_left">
+      <nav class="navbar nav_bottom">
+       <!-- Brand and toggle get grouped for better mobile display -->
+        
+         <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+          <ul class="nav navbar-nav nav_1">
+            <li><a href="index">首 页</a></li>
+            <li><a href="scenic">景 点</a></li>
+            <li><a href="hotel">酒 店</a></li>
+            <li><a href="order">订 单</a></li>
+          </ul>
+         </div><!-- /.navbar-collapse -->
+      </nav>
+    </div>
+		<div  style="float:right;width:80%;margin-top:-70px;" id="singleJD">
+			<div class="agileinfo_single">
+				<h5 th:text="${scenic.sname}"></h5>
+				<div class="col-md-4 agileinfo_single_left">
+					<img   th:src=@{'/static/images/'+${scenic.simg}} alt=" " class="img-responsive" />
+				</div>
+                <input type="hidden" th:value="${cityId}" id="cityId">
+				<div class="col-md-8 agileinfo_single_right">
+					<div class="snipcart-item block">
+						<div class="snipcart-thumb agileinfo_single_right_snipcart">
+							<div style="float: left">
+							<h4>   <div style="float: left"   th:if="${scenic.sstudent eq -1 }">学生:无学生票|</div>
+								<div style="float: left"  th:if="${scenic.sstudent eq 0 }">学生:免费|</div>
+								<div style="float: left"  th:if="${scenic.sstudent gt 0 }" th:text=@{'学生:'+${scenic.sstudent}+'|'}></div>
+								<div   th:if="${scenic.sprice eq 0 }">成人:免费</div>
+								<div   th:if="${scenic.sprice ne 0 }" th:text=@{'成人:'+${scenic.sprice}}></div>
+							</h4>
+						<div  th:text=@{'地址:'+${scenic.saddress}} ><h4 ></h4></div>
+                                <div class="snipcart-thumb agileinfo_single_right_snipcart" id="city" ><h4 ></h4></div>
+						</div>
+						<div style="float:left;margin-left: 20px;"><h4 id="temp">sdfsdf</h4><div id="condition">asdfsdfsdf</div><div id="updatetime">asdfsdfsdf</div></div>
+
+
+							<div class="snipcart-details agileinfo_single_right_details">
+							<button class="btn btn-danger my-cart-btn hvr-sweep-to-right"  th:onclick=@{'ajaxCart('+${scenic.sid}+',1)'} >Add to Cart</button>
+						</div>
+						<div class="w3agile_description">
+						<h4>评论 :</h4>
+						<p th:utext="${scenic.scomment}"></p>
+					</div></div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+<!-- //banner -->
+<!-- brands -->
+	<div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_popular">
+		<div class="container" style="margin-top: -100px;">
+				<div class="w3ls_w3l_banner_nav_right_grid1" id="zwjd">
+					<h6>周围景点</h6>
+					<div th:each="value:${list}">
+
+					<div class="col-md-3 top_brand_left">
+					<div >
+						<div class="agile_top_brand_left_grid">
+							<div class="agile_top_brand_left_grid1">
+								<figure>
+									<div class="snipcart-item block" >
+										<div >
+											<a  th:href=@{'/user/scenicSingle?sid='+${value.sid}}><img height="175px" title=" " alt=" " th:src=@{'/static/images/'+${value.simg}} /></a>
+											<p th:text="${value.sname}"></p>
+											<h4>  <div style="float: left"   th:if="${value.sstudent eq -1 }">学生:无学生票|</div>
+												<div style="float: left"  th:if="${value.sstudent eq 0 }">学生:免费|</div>
+												<div style="float: left"  th:if="${value.sstudent gt 0 }" th:text=@{'学生:'+${value.sstudent}+'|'}></div>
+												<div   th:if="${value.sprice eq 0 }">成人:免费</div>
+												<div   th:if="${value.sprice ne 0 }" th:text=@{'成人:'+${value.sprice}}></div>
+											</h4>
+										</div>
+										<div class="snipcart-details top_brand_home_details">
+											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right"  th:onclick=@{'ajaxCart('+${value.sid}+',1)'} >Add to Cart</button>
+										</div>
+									</div>
+								</figure>
+							</div>
+						</div>
+					</div>
+				</div>
+					</div>
+				  <div class="clearfix"> </div>
+				</div>
+				
+				<div class="w3ls_w3l_banner_nav_right_grid1">
+					<h6>附近酒店</h6>
+					<div th:each="value:${list2}">
+					<div class="col-md-3 top_brand_left">
+					<div >
+						<div class="agile_top_brand_left_grid">
+							<div class="agile_top_brand_left_grid1">
+								<figure>
+									<div class="snipcart-item block" >
+										<div class="snipcart-thumb"><a th:href=@{'hotelSingle?bid='+${value.bid}}>
+											<img height="175px" title=" " alt=" "   th:src=@{'/static/images/'+${value.bimg}} /></a>
+											<p><a th:href=@{'hotelSingle?bid='+${value.bid}}  th:text="${value.bname}"></a></p>
+											<h4 th:text=@{'地址:'+${value.baddress}}></h4>
+										</div>
+									</div>
+								</figure>
+							</div>
+						</div>
+					</div>
+				</div>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+					</div>
+	</div>
+<!-- //brands -->
+<!-- newsletter -->
+<!-- //newsletter -->
+<!-- footer -->
+	<div style="background: #212121">
+		<div class="container">
+			<div class="wthree_footer_copy">
+				<p>Copyright &copy; 2018.旅游系统</p>
+			</div>
+		</div>
+	</div>
+<!-- //footer -->
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    $(".dropdown").hover(            
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+            $(this).toggleClass('open');        
+        },
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+            $(this).toggleClass('open');       
+        }
+    );
+});
+</script>
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+	<div class="modal fade" id="shopping" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">购物车</h4>
+                </div>
+                <div class="modal-body" id="cartbody">                 
+                    
+                </div>
+                <div class="modal-body" id="cartbody1">                 
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="add_submit"  onclick="subOrder()" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>结算</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

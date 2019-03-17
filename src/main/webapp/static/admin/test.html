@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+<input type="button" onclick="goff()" value="获取天气信息">
+
+<br/>
+<br/>
+
+<script type="text/javascript">
+    function goff() {
+        $.ajax({
+            url:"getWeather",
+            type:"get",
+            data:{"cityId":"284885"},
+            dataType:"json",
+            success:function (data) {
+                alert(JSON.stringify(data));
+            }
+
+        })
+    }
+</script>
+</body>
+</html>
+
+

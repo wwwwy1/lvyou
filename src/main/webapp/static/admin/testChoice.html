@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="admin/js/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="admin/js/font-awesome/css/font-awesome.css">
+
+    <script src="admin/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="admin/js/cookie.js" type="text/javascript"></script>
+    <script src="admin/js/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
+</head>
+<body>
+<button onclick="gogogo()">123123</button>
+<table id="choiceStatus">
+
+
+
+</table>
+<script type="text/javascript">
+    /**
+     *
+     * 获取当前时间
+     */
+    function getNow(s) {
+        return s < 10 ? '0' + s: s;
+    }
+
+
+
+
+    function gogogo(){
+        var myDate = new Date();
+        //获取当前年
+        var year=myDate.getFullYear();
+        //获取当前月
+        var month=myDate.getMonth()+1;
+        //获取当前日
+        var date=myDate.getDate();
+        var now=year+'-'+getNow(month)+"-"+getNow(date);
+        $.ajax({
+            url:"getStatus",
+            type:"post",
+            data:{"bid":1,"cdate":now},
+            dataType:"json",
+            success:function(data){
+                alert(JSON.stringify(data));
+            }
+        });
+    }
+   /* $(function(){
+
+    });*/
+</script>
+</body>
+</html>

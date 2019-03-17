@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<title>Single</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- font-awesome icons -->
+<link href="/static/css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+<!-- //font-awesome icons -->
+<!-- js -->
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<!-- //js -->
+ <script src='/static/js/okzoom.js'></script>
+  <script>
+    $(function(){
+      $('#example').okzoom({
+        width: 150,
+        height: 150,
+        border: "1px solid black",
+        shadow: "0 0 5px #000"
+      });
+    });
+  </script>
+
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="/static/js/move-top.js"></script>
+<script type="text/javascript" src="/static/js/easing.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+	<script type="text/javascript">
+        $(function () {
+            $('#title').load('/static/user/title.html');
+        })
+	</script>
+<!-- start-smoth-scrolling -->
+</head>
+	
+<body>
+<!-- header -->
+<div id="title">
+
+</div>
+<!-- //header -->
+<!-- products-breadcrumb -->
+	<div class="products-breadcrumb">
+		<div class="container">
+			<ul>
+				<li><i class="fa fa-home" aria-hidden="true"></i><a href="index">首页</a><span>|</span></li>
+				<li>酒店详情</li>
+			</ul>
+		</div>
+	</div>
+<!-- //products-breadcrumb -->
+<!-- banner -->
+	<div class="banner">
+				<div class="w3l_banner_nav_left">
+			<nav class="navbar nav_bottom">
+			 <!-- Brand and toggle get grouped for better mobile display -->
+			  
+			   <!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+					<ul class="nav navbar-nav nav_1">
+						<li><a href="index">首 页</a></li>
+						<li><a href="scenic">景 点</a></li>
+						<li><a href="hotel">酒 店</a></li>
+						<li><a href="order">订 单</a></li>
+					</ul>
+				 </div><!-- /.navbar-collapse -->
+			</nav>
+		</div>
+		<div  style="float:right;width:80%;margin-top:-70px;" id="singleJD">
+			<div class="agileinfo_single">
+				<h5 th:text="${business.bname}"></h5>
+				<div class="col-md-4 agileinfo_single_left">
+					<img  th:src=@{'/static/images/'+${business.bimg}} alt=" " class="img-responsive" />
+				</div>
+				<div class="col-md-8 agileinfo_single_right">
+					<div class="snipcart-item block">
+						<div class="snipcart-thumb agileinfo_single_right_snipcart"><h4 th:text=@{'地址:'+${business.baddress}} ></h4></div>
+						<div class="snipcart-thumb agileinfo_single_right_snipcart"><h4 th:text=@{'联系方式:'+${business.bemail}}></h4></div>
+						<div class="w3agile_description">
+						<h4>评价 :</h4>
+						<p th:utext="${business.bcomment}"></p>
+					</div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+<!-- //banner -->
+<!-- brands -->
+	<div class="w3ls_w3l_banner_nav_right_grid w3ls_w3l_banner_nav_right_grid_popular">
+		<div class="container" style="margin-top: -100px;">
+				<div class="w3ls_w3l_banner_nav_right_grid1">
+					<h6>酒店房间</h6>
+					<div th:each="value:${list}">
+
+					<div class="col-md-3 top_brand_left">
+					<div >
+						<div class="agile_top_brand_left_grid">
+							<div class="agile_top_brand_left_grid1">
+								<figure>
+									<div class="snipcart-item block" >
+										<div class="snipcart-thumb">
+											<img height="175px" title=" " alt=" " th:src=@{'/static/images/'+${value.pimg}}  />
+											<p align="center" th:text="${value.pname}">{$value.pname}</p>
+											<h4><div style="float: left" th:text="${#numbers.formatDecimal(value.pprice*value.pdiscount,0,2)}"></div> <span th:text="${value.pprice}"></span></h4>
+										</div>
+										<div class="snipcart-details top_brand_home_details">
+											<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" th:onclick=@{'ajaxCartHotel('+${value.pid}+',1)'}>Add to Cart</button>
+										</div>
+									</div>
+								</figure>
+							</div>
+						</div>
+					</div>
+				</div>
+
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+
+				<div class="w3ls_w3l_banner_nav_right_grid1" id="zwjd">
+					<h6>周围景点</h6>
+					<div th:each="value:${list2}">
+
+						<div class="col-md-3 top_brand_left">
+							<div >
+								<div class="agile_top_brand_left_grid">
+									<div class="agile_top_brand_left_grid1">
+										<figure>
+											<div class="snipcart-item block" >
+												<div >
+													<a  th:href=@{'/user/scenicSingle?sid='+${value.sid}}><img height="175px" title=" " alt=" " th:src=@{'/static/images/'+${value.simg}} /></a>
+													<p th:text="${value.sname}"></p>
+													<h4>  <div style="float: left"   th:if="${value.sstudent eq -1 }">学生:无学生票|</div>
+														<div style="float: left"  th:if="${value.sstudent eq 0 }">学生:免费|</div>
+														<div style="float: left"  th:if="${value.sstudent gt 0 }" th:text=@{'学生:'+${value.sstudent}+'|'}></div>
+														<div   th:if="${value.sprice eq 0 }">成人:免费</div>
+														<div   th:if="${value.sprice ne 0 }" th:text=@{'成人:'+${value.sprice}}></div>
+													</h4>
+												</div>
+												<div class="snipcart-details top_brand_home_details">
+													<button class="btn btn-danger my-cart-btn hvr-sweep-to-right"  th:onclick=@{'ajaxCart('+${value.sid}+',1)'} >Add to Cart</button>
+												</div>
+											</div>
+										</figure>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				  <div class="clearfix"> </div>
+				</div>
+					</div>
+	</div>
+<!-- //brands -->
+<!-- newsletter -->
+<!-- //newsletter -->
+<!-- footer -->
+	<div style="background: #212121">
+		<div class="container">
+			<div class="wthree_footer_copy">
+				<p>Copyright &copy; 2018.旅游系统</p>
+			</div>
+		</div>
+	</div>
+<!-- //footer -->
+<!-- Bootstrap Core JavaScript -->
+<script src="/static/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    $(".dropdown").hover(            
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+            $(this).toggleClass('open');        
+        },
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+            $(this).toggleClass('open');       
+        }
+    );
+});
+</script>
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+	<div class="modal fade" id="shopping" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">购物车</h4>
+                </div>
+                <div class="modal-body" id="cartbody">                 
+                    
+                </div>
+                <div class="modal-body" id="cartbody1">                 
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="add_submit"  onclick="subOrder()" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>结算</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

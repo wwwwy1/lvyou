@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"><head>
+    <meta charset="utf-8">
+    <title>Bootstrap Admin</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/static/css/my.css">
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/js/font-awesome/css/font-awesome.css">
+    <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/static/css/docs.css" rel="stylesheet">
+    <link href="/static/css/prettify.css" rel="stylesheet">
+    <link href="/static/css/tooltips.css" rel="stylesheet" id="skin">
+
+    <style>
+        /*扩展提示框内的字体样式*/
+        .pt {
+            font-family: "微软雅黑","Microsoft Yahei",Arial,Helvetica,sans-serif,"宋体";
+            font-size: 13px;
+            color: #515151;
+        }
+    </style>
+    <script src="/static/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/premium.css">
+    <script src="/static/layer/layer.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/static/js/jquery.seat-charts.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-tooltip.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.pure.tooltips.js"></script>
+
+
+    <script type="text/javascript" src="/static/js/bootstrap-affix.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-alert.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-button.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-carousel.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-collapse.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-modal.js"></script>
+
+    <script type="text/javascript" src="/static/js/bootstrap-popover.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-scrollspy.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-transition.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-typeahead.js"></script>
+</head>
+<body class=" theme-blue">
+    <!-- Demo page code -->
+    <script type="text/javascript">
+        $(function() {
+            var match = document.cookie.match(new RegExp('color=([^;]+)'));
+            if(match) var color = match[1];
+            if(color) {
+                $('body').removeClass(function (index, css) {
+                    return (css.match (/\btheme-\S+/g) || []).join(' ')
+                })
+                $('body').addClass('theme-' + color);
+            }
+            $('[data-popover="true"]').popover({html: true});
+            
+        });
+    </script>
+    <style type="text/css">
+        #line-chart {
+            height:300px;
+            width:800px;
+            margin: 0px auto;
+            margin-top: 1em;
+        }
+        .navbar-default .navbar-brand, .navbar-default .navbar-brand:hover { 
+            color: #fff;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function() {
+            var uls = $('.sidebar-nav > ul > *').clone();
+            uls.addClass('visible-xs');
+            $('#main-menu').append(uls.clone());
+        });
+    </script>
+     <div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="" href="index"><span class="navbar-brand"><span class="fa fa-paper-plane"></span> 管理员首页</span></a></div>
+        <div class="navbar-collapse collapse" style="height: 1px;">
+          <ul id="main-menu" class="nav navbar-nav navbar-right">
+            <li class="dropdown hidden-xs">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span> Admin
+                    <i class="fa fa-caret-down"></i>
+                </a>
+              <ul class="dropdown-menu">
+                <li><a href="./">My Account</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Admin Panel</li>
+                <li><a href="./">Users</a></li>
+                <li><a href="./">Security</a></li>
+                <li><a tabindex="-1" href="../Admin/logout">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-nav" id="navigation"></div>
+    <div class="content">
+        <div class="header">
+            
+            <h1 class="page-title">商品管理</h1>
+                    <ul class="breadcrumb">
+            <li><a href="index">首页</a> </li>
+            <li class="active">商品管理</li>
+        </ul>
+
+        </div>
+        <div class="main-content">
+<div class="btn-toolbar list-toolbar">
+    <button class="btn btn-primary" onclick="ajaxSearch()">查询商品</button>
+    <div class="btn-group">
+        <select  id="sjid" style="height: 35px; ">
+
+        </select>
+    </div>
+</div>
+            <table class="table" id="productList">
+
+                <tr><td><div class="demo">
+                    <div id="seat-map" style="margin: 0 auto;width:50%;float: left">
+                        <div class="front" id="businessName"></div>
+                    </div>
+                    <div class="booking-details" style="margin: 0 auto;width:50%;float: left">
+                        <p>酒店名称：<span id="businessName1"></span></p>
+                        <p>时间：<span id="time">11月14日 21:00</span></p>
+                        <p>房间位置：</p>
+                        <ul id="selected-seats" style="width: 80%"></ul>
+                        <p>房间数：<span id="counter">0</span></p>
+                        <p>总价：<b>￥<span id="total">0</span></b></p>
+                        <button class="checkout-button">确定购买</button>
+                        <div id="legend"></div>
+                        <button id="tooltips">asdfasdf</button>
+                    </div>
+                </div> </td></tr>
+            </table>
+
+    <footer>
+     <hr>
+      <p>© 2018 旅游系统</a></p>
+    </footer>
+        </div>
+    </div>
+    <script src="/static/js/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $("[rel=tooltip]").tooltip();
+        $(function() {
+            $('.demo-cancel-click').click(function(){return false;});
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#logout").click(function () {
+            $.ajax({
+                url:"admin/logout",
+                type:"post",
+                data:{"token":"1_"+getCookie("1")},
+                dataType:"json",
+                success:function (result) {
+                    if (result.status==1){
+                        alert(result.msg);
+                        window.location.href="login";
+                    }else {
+                        alert(result.msg);
+                        window.location.href="login";
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        $(function(){
+            $('#navigation').load('/static/admin/navigation.html');
+            $.ajax({
+                url:"selectBusiness",
+                type:"get",
+                dataType:"json",
+                success:function(data){
+                   // alert(JSON.stringify(data));
+                  var  content='';
+                    $.each(data.data,function(key,val){
+                        content+= '<option value="'+val.bid+'">'+val.bname+'</option>';
+                    });
+                    $('#sjid').html(content);
+                }
+            });
+        });
+    </script>
+<script type="text/javascript">
+    //计算总金额
+    function recalculateTotal(sc) {
+        var price = 80; //票价
+        var total = 0;
+        sc.find('selected').each(function () {
+            total += price;
+        });
+        return total;
+    }
+
+</script>
+<script type="text/javascript">
+    function getNow(s) {
+        return s < 10 ? '0' + s: s;
+    }
+    function ajaxSearch() {
+        var myDate = new Date();
+        //获取当前年
+        var year=myDate.getFullYear();
+        //获取当前月
+        var month=myDate.getMonth()+1;
+        //获取当前日
+        var date=myDate.getDate();
+        var now=year+'-'+getNow(month)+"-"+getNow(date);
+       // alert(now);
+        $.ajax({
+            url:"searchRoom",
+            type:"post",
+            data:{'bid':$("#sjid").val(),'cdate':now},
+            dataType:"json",
+            success:function(data) {
+               if (data.status==1){
+                //alert(JSON.stringify(data));
+                var map=new Array();
+                var map2=new Array();
+                var i=0;
+                $('#time').html(now);
+                $.each(data.data,function(key,val) {
+                    $('#businessName').html(val.bname);
+                    $('#businessName1').html(val.bname);
+                    if (map[val.floor-1]==undefined) map[val.floor-1]='';
+                    if (val.enter==0) map[val.floor-1]+='d';
+                    if (val.enter==1) map[val.floor-1]+='s';
+                    if (val.enter==2){
+                        map2[i++]=val.floor.toString()+'_'+val.num.toString();
+                    }
+                });
+                /*alert(map);
+                alert(JSON.stringify(map));*/
+               /* var map2=[  //座位图
+                    'aaaaaaaaaa',
+                    'aaaaaaaaaa',
+                    '__________',
+                    'aaaaaaaa__',
+                    'aaaaaaaaaa',
+                    'aaaaaaaaaa',
+                    'aaaaaaaaaa',
+                    'aaaaaaaaaa',
+                    'aaaaaaaaaa',
+                    'aa__aa__aa'
+                ];*/
+                //alert(map2[3]);
+                /*$(document).ready(function() {*/
+                    var sc = $('#seat-map').seatCharts({
+                        map:map ,
+                        seats:{
+                            d: {
+                                focus  : function() {
+                                    if (this.status() == 'available') {
+                                        //if seat's available, it can be focused
+                                        $.pt({
+                                            content:'123'
+                                        })
+                                        return 'focused';
+                                    } else  {
+                                        //otherwise nothing changes
+                                        return this.style();
+                                    }
+                                },
+                                price : 100,
+                                classes : 'double', //your custom CSS class
+                                category: '双人房',
+                                description:'建议双人入驻',
+                            },
+                            s: {
+                                price : 40,
+                                classes : 'singer', //your custom CSS class
+                                category: '单人房',
+                                description:'建议单人入驻',
+                            }
+                        },
+                        legend : { //定义图例
+                            node : $('#legend'),
+                            items : [
+                                [ 'd', 'available', '双人房' ],
+                                [ 's', 'available', '单人房'],
+                                [ 'd', 'unavailable',  '已售出']
+                            ]
+                        }/*,focus  : function() {
+                            if (this.status() == 'available') {
+                                /!*alert(this.data().description);*!/
+                                return 'focused';
+                            } else  {
+                                return this.style();
+                            }
+                        }*/,
+                        click: function () { //点击事件
+                            //alert(this.data().price);
+                            var price = 80; //票价
+                            var $cart = $('#selected-seats'), //座位区
+                                $counter = $('#counter'), //票数
+                                $total = $('#total'); //总计金额
+                            if (this.status() == 'available') { //可选座
+                                $('<li>'+(this.settings.row+1)+'层'+this.settings.label+'房</li>')
+                                    .attr('id', 'cart-item-'+this.settings.id)
+                                    .data('seatId', this.settings.id)
+                                    .appendTo($cart);
+                                $counter.text(sc.find('selected').length+1);
+                                $total.text(recalculateTotal(sc)+price);
+                                return 'selected';
+                            } else if (this.status() == 'selected') { //已选中
+                                //更新数量
+                                $counter.text(sc.find('selected').length-1);
+                                //更新总计
+                                $total.text(recalculateTotal(sc)-price);
+                                //删除已预订座位
+                                $('#cart-item-'+this.settings.id).remove();
+                                //可选座
+                                return 'available';
+                            } else if (this.status() == 'unavailable') { //已售出
+                                return 'unavailable';
+                            } else {
+                                return this.style();
+                            }
+                        }
+                    });
+                    //已售出的座位['1_2'/*, '4_4','4_5','6_6','6_7','8_5','8_6','8_7','8_8', '10_1', '10_2'*/]
+                    sc.get(map2).status('unavailable');sc.status('1_1', 'unavailable');
+                /*}*/} else {$('#seat-map').html('<div class="front" id="businessName"></div>');$('#seat-map').removeAttr('class');
+                   $('#seat-map').removeAttr('tabindex');$('#seat-map').removeAttr('aria-activedescendant');
+                   $('#legend').html(' ');
+                   $('#legend').removeAttr('class');
+                   $('#businessName1').html(' ');$('#businessName').html(' ');
+                   $('#time').html(' ');
+                   alert("酒店暂无销售信息");
+           }
+    }
+
+        });
+    }
+</script>
+    <script type="text/javascript">
+        /*jQuery工具集调用方式*/
+        $('#tooltips').hover(function() {
+            var self = this;
+            $.pt({
+                target: self,
+                content: '好111111111声。。。'
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/js/font-awesome/css/font-awesome.css">
+
+    <script src="/static/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/static/js/cookie.js" type="text/javascript"></script>
+    <script src="/static/js/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".knob").knob();
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/premium.css">
+</head>
+<body>
+<div style="width: 400px;margin: 0 auto">
+<div class="row">
+    <div class="col-md-4">
+        <br>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane active in" id="home">
+                <div class="form-group">
+                    <input type="hidden" id="uid" th:value="${data.uid}">
+                    <label>用户名</label>
+                    <input type="text" id='uname'  th:value="${data.uname}"   class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="text" id='upassword' placeholder="输入更改后的密码" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id='uemail' th:value="${data.uemail}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>地址</label>
+                    <select name="uaddress" id="uaddress" class="form-control">
+                        <option selected="selected" value="绍兴">---热门城市---</option>
+                        <option value="绍兴">绍兴</option>
+                        <option value="杭州">杭州</option>
+                        <option value="宁波">宁波</option>
+                        <option value="上海">上海</option>
+                        <option value="南京">南京</option>
+                        <option value="北京">北京</option>
+                        <option value="深圳">深圳</option>
+                    </select>
+                </div>
+                <div class="btn-toolbar list-toolbar">
+                    <input  class="btn btn-primary" type="submit" id="submit" value='确认更改'>
+                </div>
+            </div></div></div></div></div>
+
+<script type="text/javascript">
+    $("#submit").click(function () {
+        var uid=$("#uid").val();
+        var uname=$("#uname").val();
+        var upassword=$("#upassword").val();
+        var uemail=$("#uemail").val();
+        var uaddress=$("#uaddress").val();
+        var flag=true;
+        if (upassword==""){
+            flag=false;
+            alert("需输入新密码！");
+            $("#upassword")[0].focus();
+        }
+        if (flag){
+            $.ajax({
+                url: "../updateUser",
+                type: "post",
+                data:{"uid":uid,"uname":uname,"upassword":upassword,"uemail":uemail,"uaddress":uaddress},
+                dataType: "json",
+                success: function (data) {
+                    if (data.status==1){
+                        alert(data.msg);
+                        parent.location.reload(); //刷新父亲对象
+                    }else {
+                        alert(data.msg);
+                        parent.location.reload(); //刷新父亲对象
+                    }
+                }
+            });
+        }
+    })
+</script>
+</body>
+
+</html>

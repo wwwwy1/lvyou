@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/js/style.css" rel="stylesheet" type="text/css" media="all">
+<!-- font-awesome icons -->
+<link href="/static/css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+<!-- //font-awesome icons -->
+<!-- js -->
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<!-- //js -->
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="/static/js/move-top.js"></script>
+<script type="text/javascript" src="/static/js/easing.js"></script>
+	<link rel="stylesheet" href="/static/css/flexslider.css" type="text/css" media="screen" property="" />
+	<script  src="/static/js/jquery.flexslider.js"></script>
+	<!-- defer -->
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<script type="text/javascript">
+    $(function(){
+        $('#title').load('/static/user/title.html');
+
+            $('.flexslider').flexslider({
+                animation: "slide",
+                start: function(slider){
+                    $('body').removeClass('loading');
+                }
+            });
+
+        $.ajax({
+            url: "/user/getHotScenic",
+            type: "get",
+			data:{"num":4},
+            dataType: "json",
+            success: function (data) {
+                var tr='';
+                $.each(data.data,function(key,val){
+                    var st=val.sstudent;
+                    var sp=val.sprice;
+                    if (val.sstudent==-1) st='无学生票';
+					 else if (val.sstudent==0) st='免费';
+					 if (val.sprice==0) sp='免费';
+                tr+= '\t\t\t\t\t<div class="col-md-3 top_brand_left">\n' +
+                    '\t\t\t\t\t<div >\n' +
+                    '\t\t\t\t\t\t<div class="agile_top_brand_left_grid">\n' +
+                    '\t\t\t\t\t\t\t<div class="agile_top_brand_left_grid1">\n' +
+                    '\t\t\t\t\t\t\t\t<figure>\n' +
+                    '\t\t\t\t\t\t\t\t\t<div class="snipcart-item block" >\n' +
+                    '\t\t\t\t\t\t\t\t\t\t<div class="snipcart-thumb">\n' +
+                    '\t\t\t\t\t\t\t\t\t\t\t<a href="scenicSingle?sid='+val.sid+'"><img height="175px" title=" " alt=" " src="/static/images/'+val.simg+'" /></a>\t\t\n' +
+                    '\t\t\t\t\t\t\t\t\t\t\t<p>'+val.sname+'</p>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t\t<h4>学生:'+st+'|成人:'+sp+'\n' +
+                    '</h4>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t</div>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t<div class="snipcart-details top_brand_home_details">\n' +
+                    '\t\t\t\t\t\t\t\t\t\t\t<button class="btn btn-danger my-cart-btn hvr-sweep-to-right" onclick="ajaxCart('+val.sid+',1)">Add to Cart</button>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t</div>\n' +
+                    '\t\t\t\t\t\t\t\t\t</div>\n' +
+                    '\t\t\t\t\t\t\t\t</figure>\n' +
+                    '\t\t\t\t\t\t\t</div>\n' +
+                    '\t\t\t\t\t\t</div>\n' +
+                    '\t\t\t\t\t</div>\n' +
+                    '\t\t\t\t</div>\n';
+                });
+                tr+='\t\t\t\t<div class="clearfix"> </div>';
+                $("#hotScenic").html(tr);
+            }
+        });
+        $.ajax({
+            url: "/user/getNiceBusiness",
+            type: "get",
+            data: {"num": 4},
+            dataType: "json",
+            success: function (data) {
+                var tr = '';
+                $.each(data.data, function (key, val) {
+                    tr+='\t\t\t\t\t<div class="col-md-3 top_brand_left">\n' +
+                        '\t\t\t\t\t<div >\n' +
+                        '\t\t\t\t\t\t<div class="agile_top_brand_left_grid">\n' +
+                        '\t\t\t\t\t\t\t<div class="agile_top_brand_left_grid1">\n' +
+                        '\t\t\t\t\t\t\t\t<figure>\n' +
+                        '\t\t\t\t\t\t\t\t\t<div class="snipcart-item block" >\n' +
+                        '\t\t\t\t\t\t\t\t\t\t<div class="snipcart-thumb">\n' +
+                        '\t\t\t\t\t\t\t\t\t\t\t<a href="hotelSingle?bid='+val.bid+'"><img height="175px" title=" " alt=" " src="/static/images/'+val.bimg+'" /></a>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t\t<p><a href="hotelSingle?bid='+val.bid+'">'+val.bname+'</a>' +
+                        '\t\t\t\t\t\t\t\t\t\t\t<h4>地址:'+val.baddress+'</h4>\n' +
+                        '\t\t\t\t\t\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t\t\t\t\t</figure>\n' +
+                        '\t\t\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t\t</div>\n' +
+                        '\t\t\t\t</div>\n';
+                });
+                tr+='\t\t\t\t<div class="clearfix"> </div>';
+                $("#nicebusiness").html(tr);
+            }
+        });
+ });
+
+</script>
+<!-- start-smoth-scrolling -->
+</head>
+	
+<body>
+<!-- header -->
+	<div id="title">
+
+	</div>
+<!-- script-for sticky-nav -->
+<!-- //script-for sticky-nav -->
+<!-- //header -->
+<!-- banner -->
+	<div class="banner">
+		<div class="w3l_banner_nav_left">
+			<nav class="navbar nav_bottom">
+			 <!-- Brand and toggle get grouped for better mobile display -->
+			  
+			   <!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+					<ul class="nav navbar-nav nav_1">
+						<li><a href="index">首 页</a></li>
+						<li class="dropdown mega-dropdown active">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">景点<span class="caret"></span></a>
+						<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+							<div class="w3ls_vegetables">
+								<ul>
+									<li><a href="/user/scenicList">所有景点</a></li>
+									<li><a href="/user/scenicRegion">按地区查看</a></li>
+								</ul>
+							</div>
+						</div></li>
+						<li class="dropdown mega-dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">酒店<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="/user/businessList">所有酒店</a></li>
+										<li><a href="/user/businessRegion">按地区查看</a></li>
+									</ul>
+								</div>
+							</div></li>
+						<li><a href="order">订 单</a></li>
+					</ul>
+				 </div><!-- /.navbar-collapse -->
+			</nav>
+		</div>
+		<div class="w3l_banner_nav_right">
+			<section class="slider">
+				<div class="flexslider">
+					<ul class="slides">
+						<li>
+							<div class="w3l_banner_nav_right_banner">
+								<h3>Make your <span>food</span> with Spicy.</h3>
+								<div class="more">
+									<a href="products" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="w3l_banner_nav_right_banner1">
+								<h3>Make your <span>food</span> with Spicy.</h3>
+								<div class="more">
+									<a href="products" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="w3l_banner_nav_right_banner2">
+								<h3>upto <i>50%</i> off.</h3>
+								<div class="more">
+									<a href="products" class="button--saqui button--round-l button--text-thick" data-text="Shop now">Shop now</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<!-- flexSlider -->
+
+			<!-- //flexSlider -->
+		</div>
+		<div class="clearfix"></div>
+	</div>
+<!-- banner -->
+	
+<!-- top-brands -->
+	<div class="top-brands">
+		<div class="container">
+			<h3>热门景点</h3>
+			<div class="agile_top_brands_grids" id="hotScenic">
+
+			</div>
+		</div>
+	</div>
+	<div class="fresh-vegetables">
+		<div class="container">
+			<h3>优质酒店</h3>
+			<div class="agile_top_brands_grids" id="nicebusiness">
+
+				<div class="clearfix"> </div>
+			</div>
+				
+			
+		</div>
+	</div>
+<!-- //fresh-vegetables -->
+<!-- newsletter -->
+<hr style="height: 30px;"/>
+<div class="contact-agile" id="contact">
+	<h3>Contact <span>Us</span></h3>
+	<div class="container">
+
+
+			<div class="contact-grids1 agileinfo">
+				<div class="contact-me ">
+					<h4>Message</h4>
+					<textarea id="content" placeholder="" required> </textarea>
+				</div>
+				<div class="col-md-5 contact-form1">
+					<h4>Name</h4>
+					<input type="text" id="contactname" placeholder="" required="">
+				</div>
+				<div class="col-md-5 contact-form1">
+					<h4>Email</h4>
+					<input type="email" id="contactemail" placeholder="" required="">
+				</div>
+				<div class="col-md-2 contact-form">
+					<input type="button" value="提交" onclick="contactSub()">
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+<script type="text/javascript">
+	function contactSub() {
+        $.ajax({
+            url: "/user/insertContact",
+            type: "post",
+            data: {"content": $("#content").html(),"contactname":$("#contactname").val(),"contactemail":$("#contactemail").val()},
+            dataType: "json",
+            success: function (data) {
+               alert(data.msg);
+                window.location.reload();
+            }
+        });
+    }
+</script>
+
+	</div>
+</div>
+<!-- //newsletter -->
+<!-- footer -->
+	<div style="background: #212121">
+		<div class="container">
+			<div class="wthree_footer_copy">
+				<p>Copyright &copy; 2018.旅游系统</p>
+			</div>
+		</div>
+	</div>
+<script src="/static/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    $(".dropdown").hover(            
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+            $(this).toggleClass('open');        
+        },
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+            $(this).toggleClass('open');       
+        }
+    );
+});
+</script>
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+<script type="text/javascript">
+
+</script>
+<!-- //here ends scrolling icon -->
+<div class="modal fade" id="shopping" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">购物车</h4>
+                </div>
+                <div class="modal-body" id="cartbody">                 
+                    
+                </div>
+                <div class="modal-body" id="cartbody1">                 
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="add_submit"  onclick="subOrder()" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>结算</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

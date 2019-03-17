@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="/static/js/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/js/font-awesome/css/font-awesome.css">
+
+    <script src="/static/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="/static/js/cookie.js" type="text/javascript"></script>
+    <script src="/static/js/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $(".knob").knob();
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/premium.css">
+</head>
+<body>
+<div style="width: 400px;margin: 0 auto">
+<div class="row">
+    <div class="col-md-4">
+        <br>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane active in" id="home">
+                <div class="form-group">
+                    <input type="hidden" id="bid" th:value="${data.bid}">
+                    <label>缩略图</label>
+                    <img height="80px" width="120px" id="thumbnail" th:src=@{'/static/images/'+${data.bimg}}>
+                    <input type="file" id="fileio"  onchange="changeImg(this)" >
+                </div>
+                <div class="form-group">
+                    <label>商家名称</label>
+                    <input type="text" id='bname'  th:value="${data.bname}"   class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>商家地址</label>
+                    <input type="text" id='baddress' th:value="${data.baddress}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>联系方式</label>
+                    <input type="text" id='bemail' th:value="${data.bemail}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>商家密码</label>
+                    <input type="password" id='bpassword' placeholder="请输入新密码" class="form-control">
+                </div>
+                <div class="btn-toolbar list-toolbar">
+                    <input  class="btn btn-primary" type="submit" id="submit" value='确认更改'>
+                </div>
+            </div></div></div></div></div>
+
+<script type="text/javascript">
+    $("#submit").click(function () {
+        var bid=$("#bid").val();
+        var bname=$("#bname").val();
+        var baddress=$("#baddress").val();
+        var bemail=$("#bemail").val();
+        var bpassword=$("#bpassword").val();
+        var formData=new FormData();
+        var img_file=document.getElementById("fileio");
+        var fileObj=img_file.files[0];
+        formData.append("imgGo",fileObj);
+        formData.append("bid",bid);
+        formData.append("bname",bname);
+        formData.append("baddress",baddress);
+        formData.append("bemail",bemail);
+        formData.append("bpassword",bpassword);
+        $.ajax({
+            url: "../updateBusiness",
+            type: "post",
+            data:formData,
+            processData:false,
+            contentType:false,
+            success: function (data) {
+                if (data.status==1){
+                    alert(data.msg);
+                    parent.location.reload(); //刷新父亲对象
+                }else {
+                    alert(data.msg);
+                    parent.location.reload(); //刷新父亲对象
+                }
+            }
+        });
+    })
+</script>
+<script type="text/javascript">
+    function changeImg(f) {
+        var rd = new FileReader();//创建文件读取对象
+        var files = f.files[0];//获取file组件中的文件
+            rd.readAsDataURL(files);//文件读取装换为base64类型
+          rd.onloadend = function(e) {
+        // 加载完毕之后获取结果赋值给img
+            document.getElementById("thumbnail").src = this.result;
+          }
+    }
+</script>
+</body>
+
+</html>
