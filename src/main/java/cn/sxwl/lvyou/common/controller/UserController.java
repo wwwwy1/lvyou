@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -70,6 +74,21 @@ public class UserController {
     @RequestMapping(value = "/admin/goTestSqlProvider" ,method = RequestMethod.POST)
     public List<Map<String,Object>> goTestSqlProvider(String tiaojian){
        return userService.goTestSqlProvider(tiaojian);
+    }
+
+    @PostMapping(value = "/user/login")
+    public ResponseEntity userLogin(User user, HttpServletRequest request){
+        System.out.println(user);
+        ResponseEntity re= userService.userLogin(user,request);
+        System.out.println(request.getSession().getAttribute("username"));
+        return re;
+    }
+    @PostMapping(value = "/user/register")
+    public ResponseEntity userRegister(User user,HttpServletRequest request){
+        System.out.println(user);
+        ResponseEntity re= userService.userRegister(user,request);
+        System.out.println(request.getSession().getAttribute("username"));
+        return re;
     }
 
 

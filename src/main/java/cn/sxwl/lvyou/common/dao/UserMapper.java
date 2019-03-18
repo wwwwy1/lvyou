@@ -134,4 +134,23 @@ public interface UserMapper {
 
     @SelectProvider(type = UserSqlProvider.class,method ="testSelect" )
     List<Map<String,Object>> goTestSqlProvider(String tiaojian);
+
+
+
+    @Select({
+            "select",
+            "uid, uname, upassword, uaddress, uemail, ucreatetime, ubalance",
+            "from user",
+            "where uname = #{uname,jdbcType=VARCHAR}"
+    })
+    @Results({
+            @Result(column="uid", property="uid", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="uname", property="uname", jdbcType=JdbcType.VARCHAR),
+            @Result(column="upassword", property="upassword", jdbcType=JdbcType.VARCHAR),
+            @Result(column="uaddress", property="uaddress", jdbcType=JdbcType.VARCHAR),
+            @Result(column="uemail", property="uemail", jdbcType=JdbcType.VARCHAR),
+            @Result(column="ucreatetime", property="ucreatetime", jdbcType=JdbcType.TIMESTAMP),
+            @Result(column="ubalance", property="ubalance", jdbcType=JdbcType.DECIMAL)
+    })
+    User selectByUsername(String uname);
 }

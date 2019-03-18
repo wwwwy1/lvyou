@@ -81,5 +81,4 @@ public class IndexController {
         return "/user/businessRegion";
     }
 
-
 }

@@ -14,10 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.logging.Filter;
 
@@ -122,5 +125,42 @@ public class UserService {
     }
     public List<Map<String,Object>>  goTestSqlProvider(String tiaojian){
           return   userMapper.goTestSqlProvider(tiaojian);
+    }
+    public ResponseEntity userLogin(User user, HttpServletRequest request){
+        ResponseEntity re=new ResponseEntity();
+        User checkUser= userMapper.selectByUsername(user.getUname());
+        if (checkUser==null){
+            re.setMsg("用户不存在");
+            re.setStatus(2);
+            return re;
+        }else if (!checkUser.getUpassword().equals(MD5.md5(user.getUpassword()))){
+            re.setMsg("密码错误");
+            re.setStatus(1);
+            return re;
+        }
+        re.setMsg("登录成功");
+        re.setStatus(0);
+        HttpSession session=request.getSession();
+        session.setAttribute("username",user.getUname());
+        return re;
+    }
+    public ResponseEntity userRegister(User user, HttpServletRequest request){
+        ResponseEntity re=new ResponseEntity();
+        user.setUhead("/headImg/boy.jpg");
+        user.setUpassword(MD5.md5(user.getUpassword()));
+        user.setUcreatetime(new Date());
+        user.setUbalance(BigDecimal.ZERO);
+        int i=userMapper.insert(user);
+        if (i==1){
+            re.setMsg("登录成功");
+            re.setStatus(1);
+            HttpSession session=request.getSession();
+            session.setAttribute("username",user.getUname());
+            return re;
+        }else {
+            re.setMsg("注册失败");
+            re.setStatus(0);
+            return re;
+        }
     }
 }

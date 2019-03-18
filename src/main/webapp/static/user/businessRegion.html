@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <title>Products</title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="" />
+	<link href="/static/js/style.css" rel="stylesheet" type="text/css" media="all">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- //for-mobile-apps -->
@@ -31,7 +32,6 @@
 <!-- start-smoth-scrolling -->
 	<script type="text/javascript">
         $(function () {
-            $('#title').load('/static/user/title.html');
             goPaging(1,"绍兴");
             goPaging(1,"宁波");
             goPaging(1,"杭州");
@@ -103,8 +103,209 @@
 	
 <body>
 <!-- header -->
-	<div id="title">
+<div id="title">
+	<div class="agileits_header">
+		<div class="w3l_offers">
+			<a href="index">旅游系统</a>
+		</div>
+		<div class="w3l_search">
+			<form action="searchlist" method="post">
+				<input type="text" name="Product" value="" placeholder="输入需要查找的关键字">
+				<input type="submit" value=" ">
+			</form>
+		</div>
+		<div class="product_list_header">
+			<div style="cursor: pointer;"><a onclick="shoppingcart()">
+				<span class="glyphicon glyphicon-shopping-cart my-cart-icon">购物车</span></a>
+			</div>
+		</div>
+		<div class="w3l_header_right">
+			<ul>
+				<li class="dropdown profile_details_drop" th:if="${session.username ==null}">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" ><span >
+							未登录</span><i class="fa fa-user" aria-hidden="true"></i><span class="caret" ></span></a>
+					<div class="mega-dropdown-menu"  >
+						<div class="w3ls_vegetables">
+							<ul class="dropdown-menu drp-mnu">
+								<li><a onclick="goLogin()" >Login</a></li>
+								<li><a onclick="goRegister()">Sign Up</a></li>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li class="dropdown profile_details_drop" th:if="${session.username!=null}">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" ><span th:text="${session.username}">
+							</span><i class="fa fa-user" aria-hidden="true"></i><span class="caret" ></span></a>
+					<div class="mega-dropdown-menu"  >
+						<div class="w3ls_vegetables">
+							<ul class="dropdown-menu drp-mnu">
+								<li><a href="/user/userSingle" >个人中心</a></li>
+								<li><a onclick="out()">退出</a></li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+            function shoppingcart() {
+                //$("#myModalLabel").text("新增");
+                $('#shopping').modal();
+            }
+            function goLogin() {
+                $('#myModal3').modal();
+            }
+            function goRegister() {
+                $('#myModal4').modal();
+            }
+		</script>
+		<div class="w3l_header_right1">
+			<h2><a href="mail">Contact Us</a></h2>
+		</div>
+		<div class="clearfix"> </div>
 	</div>
+	<!-- script-for sticky-nav -->
+	<script>
+        $(document).ready(function() {
+            var navoffeset=$(".agileits_header").offset().top;
+            $(window).scroll(function(){
+                var scrollpos=$(window).scrollTop();
+                if(scrollpos >=navoffeset){
+                    $(".agileits_header").addClass("fixed");
+                }else{
+                    $(".agileits_header").removeClass("fixed");
+                }
+            });
+
+        });
+	</script>
+	<!-- //script-for sticky-nav -->
+
+	<!-- Bootstrap Core JavaScript -->
+	<script>
+        $(document).ready(function(){
+            $(".dropdown").hover(
+                function() {
+                    $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function() {
+                    $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+	</script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $().UItoTop({ easingType: 'easeOutQuart' });
+
+        });
+	</script>
+	<!-- //here ends scrolling icon -->
+	<div class="logo_products">
+		<div class="container">
+			<div class="w3ls_logo_products_left">
+				<h1><a href="index"><span>lvyou</span> 旅游</a></h1>
+			</div>
+			<div class="w3ls_logo_products_left1">
+				<ul class="special_items">
+					<li><a href="index">首页</a><i>/</i></li>
+					<li><a href="scenic">景点</a><i>/</i></li>
+					<li><a href="hotel">酒店</a><i>/</i></li>
+					<li><a href="order">订单</a></li>
+				</ul>
+			</div>
+			<div class="w3ls_logo_products_left1">
+				<ul class="phone_email">
+					<li><i class="fa fa-phone" aria-hidden="true"></i>(0575)88345555</li>
+					<li><i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:usx16147220@163.com">usx16147220@163.com</a></li>
+				</ul>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" >
+		<div class="modal-dialog" role="document">
+			<!-- Modal content-->
+			<div class="modal-content news-w3l">
+				<div class="modal-header">
+					<button type="button" class="close w3l" data-dismiss="modal">&times;</button>
+					<h4>登录</h4>
+					<!--newsletter-->
+					<div class="login-main wthree">
+						<input type="text" placeholder="请输入您的用户名" id="username" >
+						<input type="password" placeholder="请输入您的密码" id="password" >
+						<input type="submit" onclick="toLogin()"  value="登录">
+					</div>
+					<!--//newsletter-->
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+            function toLogin() {
+                $.ajax({
+                    url:"/user/login",
+                    method:"post",
+                    data:{"uname":$('#username').val(),"upassword":$('#password').val()},
+                    dataType:"json",
+                    success:function (data) {
+                        alert(JSON.stringify(data));
+                        if (data.status==0){
+                            window.location.replace("/user/index");
+
+                        }
+                    }
+
+                })
+            }
+            function toRegister() {
+                var flag=0;
+                if ($('#registerPassword').val()!=$('#registerRepassword').val()) {
+                    alert("两次密码需要相同");
+                    $('#registerRepassword').val("");
+                    flag=1;
+                }
+                if (flag==0){
+                    $.ajax({
+                        url:"/user/register",
+                        method:"post",
+                        data:{"uname":$('#registerName').val(),"upassword":$('#registerPassword').val(),"uemail":$('#registerEmail').val()},
+                        dataType:"json",
+                        success:function (data) {
+                            alert(JSON.stringify(data));
+                            if (data.status==1){
+                                window.location.replace("/user/index");
+                            }
+                        }
+
+                    })
+                }
+            }
+		</script>
+	</div>
+</div>
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content news-w3l">
+			<div class="modal-header">
+				<button type="button" class="close w3l" data-dismiss="modal">&times;</button>
+				<h4>Register</h4>
+				<!--newsletter-->
+				<div class="login-main wthree">
+					<input type="text" placeholder="请输入您的用户名"  id="registerName" name="Name">
+					<input type="password" placeholder="请输入您的密码" id="registerPassword">
+					<input type="password" placeholder="请确认您的密码" id="registerRepassword">
+					<input type="email" placeholder="请输入您的邮箱"  id="registerEmail">
+					<input type="submit" onclick="toRegister()" value="确认注册">
+				</div>
+				<!--//newsletter-->
+			</div>
+		</div>
+	</div>
+</div>
 <!-- //header -->
 <!-- products-breadcrumb -->
 	<div class="products-breadcrumb">

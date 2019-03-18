@@ -15,11 +15,9 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class LvyouApplicationTests {
-
 	@Test
 	public void contextLoads() {
 		System.out.println(MD5.md5("admin"));
 	}
-
 }
 
