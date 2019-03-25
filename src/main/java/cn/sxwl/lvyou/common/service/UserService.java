@@ -120,6 +120,15 @@ public class UserService {
         re.setMsg("okkk");
         return re;
     }
+    public ResponseEntity updateUser(Integer addje,Integer uid){
+        Integer result= userMapper.addUbalance(addje,uid);
+        ResponseEntity re=new ResponseEntity();
+        re.setStatus(result);
+        if (result==1){
+            re.setMsg("更新成功");
+        }else re.setMsg("更新失败");
+        return re;
+    }
     public User testOne(Integer uid){
        return userMapper.selectUserOrderByUid(uid);
     }
@@ -141,6 +150,7 @@ public class UserService {
         re.setMsg("登录成功");
         re.setStatus(0);
         HttpSession session=request.getSession();
+        session.setAttribute("userid",checkUser.getUid());
         session.setAttribute("username",user.getUname());
         return re;
     }
@@ -152,7 +162,7 @@ public class UserService {
         user.setUbalance(BigDecimal.ZERO);
         int i=userMapper.insert(user);
         if (i==1){
-            re.setMsg("登录成功");
+            re.setMsg("注册成功");
             re.setStatus(1);
             HttpSession session=request.getSession();
             session.setAttribute("username",user.getUname());
@@ -162,5 +172,42 @@ public class UserService {
             re.setStatus(0);
             return re;
         }
+    }
+    public ResponseEntity updateUser(MultipartFile imgGo,Integer userid){
+        ResponseEntity re=new ResponseEntity();
+        re.setMsg("更改失败");
+        if (imgGo!=null){
+            System.out.println("------------有图片---------");
+            User user=userMapper.selectByPrimaryKey(userid);
+            String profilesPath="F:\\sanxia\\lvyou\\lvyou\\src\\main\\webapp\\static\\images\\headImg\\";
+            BufferedOutputStream out=null;
+            UUID uuid=UUID.randomUUID();
+            String uid=uuid.toString();
+            uid=uid.replace("-","");
+            String[] last=imgGo.getOriginalFilename().split("[.]");
+            String path=profilesPath+uid+"."+last[1];
+            user.setUhead("headImg/"+uid+"."+last[1]);
+            System.out.println(userMapper.updateByUhead(user));
+            re.setStatus(1);
+            re.setMsg("更改成功");
+            try {
+                File folder=new File(profilesPath);
+                if (!folder.exists())folder.mkdirs();
+                out = new BufferedOutputStream(new FileOutputStream(path));
+                out.write(imgGo.getBytes());
+                out.flush();
+            }catch (Exception e){
+                e.printStackTrace();
+                re.setMsg("badddd");
+                return re;
+            }finally {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return re;
     }
 }

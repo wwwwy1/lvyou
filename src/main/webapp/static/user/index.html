@@ -156,7 +156,7 @@
 						<div class="mega-dropdown-menu"  >
 							<div class="w3ls_vegetables">
 								<ul class="dropdown-menu drp-mnu">
-									<li><a href="/user/userSingle" >个人中心</a></li>
+									<li><a href="/user/userSingle"  th:href=@{'/user/userSingle/'+${session.userid}} >个人中心</a></li>
 									<li><a onclick="out()">退出</a></li>
 								</ul>
 							</div>
@@ -424,10 +424,8 @@
 <!-- newsletter -->
 <hr style="height: 30px;"/>
 <div class="contact-agile" id="contact">
-	<h3>Contact <span>Us</span></h3>
+	<h3>Contact <span>Us:</span></h3>
 	<div class="container">
-
-
 			<div class="contact-grids1 agileinfo">
 				<div class="contact-me ">
 					<h4>Message</h4>

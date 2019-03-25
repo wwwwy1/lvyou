@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<title>个人主页</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+	<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="/static/js/style.css" rel="stylesheet" type="text/css" media="all">
+	<!-- font-awesome icons -->
+	<link href="/static/css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+	<!-- //font-awesome icons -->
+	<!-- js -->
+	<script src="/static/js/jquery-1.11.1.min.js"></script>
+	<!-- //js -->
+	<!-- start-smoth-scrolling -->
+	<script type="text/javascript" src="/static/js/move-top.js"></script>
+	<script type="text/javascript" src="/static/js/easing.js"></script>
+	<link rel="stylesheet" href="/static/css/flexslider.css" type="text/css" media="screen" property="" />
+	<script  src="/static/js/jquery.flexslider.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+<!-- start-smoth-scrolling -->
+</head>
+	
+<body>
+<!-- header -->
+<div id="title">
+	<div class="agileits_header">
+		<div class="w3l_offers">
+			<a href="index">旅游系统</a>
+		</div>
+		<div class="w3l_search">
+			<form action="searchlist" method="post">
+				<input type="text" name="Product" value="" placeholder="输入需要查找的关键字">
+				<input type="submit" value=" ">
+			</form>
+		</div>
+		<div class="product_list_header">
+			<div style="cursor: pointer;"><a onclick="shoppingcart()">
+				<span class="glyphicon glyphicon-shopping-cart my-cart-icon">购物车</span></a>
+			</div>
+		</div>
+		<div class="w3l_header_right">
+			<ul>
+				<li class="dropdown profile_details_drop" th:if="${session.username ==null}">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" ><span >
+							未登录</span><i class="fa fa-user" aria-hidden="true"></i><span class="caret" ></span></a>
+					<div class="mega-dropdown-menu"  >
+						<div class="w3ls_vegetables">
+							<ul class="dropdown-menu drp-mnu">
+								<li><a onclick="goLogin()" >Login</a></li>
+								<li><a onclick="goRegister()">Sign Up</a></li>
+							</ul>
+						</div>
+					</div>
+				</li>
+				<li class="dropdown profile_details_drop" th:if="${session.username!=null}">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" ><span th:text="${session.username}">
+							</span><i class="fa fa-user" aria-hidden="true"></i><span class="caret" ></span></a>
+					<div class="mega-dropdown-menu"  >
+						<div class="w3ls_vegetables">
+							<ul class="dropdown-menu drp-mnu">
+								<li><a href="/user/userSingle"  th:href=@{'/user/userSingle/'+${session.userid}} >个人中心</a></li>
+								<li><a onclick="out()">退出</a></li>
+							</ul>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="w3l_header_right1">
+			<h2><a href="mail">Contact Us</a></h2>
+		</div>
+		<div class="clearfix"> </div>
+	</div>
+	<!-- script-for sticky-nav -->
+	<script>
+        $(document).ready(function() {
+            var navoffeset=$(".agileits_header").offset().top;
+            $(window).scroll(function(){
+                var scrollpos=$(window).scrollTop();
+                if(scrollpos >=navoffeset){
+                    $(".agileits_header").addClass("fixed");
+                }else{
+                    $(".agileits_header").removeClass("fixed");
+                }
+            });
+
+        });
+	</script>
+	<!-- //script-for sticky-nav -->
+
+	<!-- Bootstrap Core JavaScript -->
+	<script>
+        $(document).ready(function(){
+            $(".dropdown").hover(
+                function() {
+                    $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function() {
+                    $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+	</script>
+	<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $().UItoTop({ easingType: 'easeOutQuart' });
+
+        });
+	</script>
+	<!-- //here ends scrolling icon -->
+	<div class="logo_products">
+		<div class="container">
+			<div class="w3ls_logo_products_left">
+				<h1><a href="index"><span>lvyou</span> 旅游</a></h1>
+			</div>
+			<div class="w3ls_logo_products_left1">
+				<ul class="special_items">
+					<li><a href="index">首页</a><i>/</i></li>
+					<li><a href="scenic">景点</a><i>/</i></li>
+					<li><a href="hotel">酒店</a><i>/</i></li>
+					<li><a href="order">订单</a></li>
+				</ul>
+			</div>
+			<div class="w3ls_logo_products_left1">
+				<ul class="phone_email">
+					<li><i class="fa fa-phone" aria-hidden="true"></i>(0575)88345555</li>
+					<li><i class="fa fa-envelope-o" aria-hidden="true"></i><a href="mailto:usx16147220@163.com">usx16147220@163.com</a></li>
+				</ul>
+			</div>
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+</div>
+<!-- //header -->
+<!-- products-breadcrumb -->
+	<div class="products-breadcrumb">
+		<div class="container">
+			<ul>
+				<li><i class="fa fa-home" aria-hidden="true"></i><a href="index.html">首页</a><span>|</span></li>
+				<li>个人主页</li>
+			</ul>
+		</div>
+	</div>
+<!-- //products-breadcrumb -->
+<!-- banner -->
+	<div class="banner">
+				<div class="w3l_banner_nav_left">
+			<nav class="navbar nav_bottom">
+			 <!-- Brand and toggle get grouped for better mobile display -->
+			  
+			   <!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+					<ul class="nav navbar-nav nav_1">
+						<li><a href="index">首 页</a></li>
+						<li><a href="scenic">景 点</a></li>
+						<li><a href="hotel">酒 店</a></li>
+						<li><a href="order">订 单</a></li>
+					</ul>
+				 </div><!-- /.navbar-collapse -->
+			</nav>
+		</div>
+		<div class="w3l_banner_nav_right">
+<!-- mail -->
+		<div class="mail">
+			<h3>个人信息</h3>
+			<input type="hidden" id="uid" th:value="${session.userid}">
+			<div class="agileinfo_mail_grids">
+				<div class="col-md-4 agileinfo_mail_grid_left">
+					<ul>
+						<li><img height="200px" width="200px" th:src=@{'/static/images/'+${user.uhead}} ></li>
+						<input type="button" name="tj" onclick="chageHead()" value="修改用户头像" style="margin-top:40px;outline: none;padding: 10px 0;font-size: 14px;color: #fff;background: #84C639;width: 200px;border: none;  text-transform: uppercase;">
+					</ul>
+				</div>
+				<div  id="uss" class="col-md-8 agileinfo_mail_grid_right">
+						<div class="col-md-6 wthree_contact_left_grid">
+							<font size="3"><b> 用户名：</b></font><input readonly="" type="text" id="uname"  th:value="${user.uname}" value="{$data.uname}">
+							<font size="3"><b> 邮箱：</b></font>
+							<input type="email" id="uemail" th:value="${user.uemail}" value="{$data.}">
+						</div>
+						<div class="col-md-6 wthree_contact_left_grid">
+							<font size="3"><b> 注册时间：</b></font>
+							<input type="text" id="ucreatetime" readonly="" th:value="${#dates.format(user.ucreatetime)}" value="{$data.ucreatetime}">
+							<font size="3"><b> 地址：</b></font><input type="email" id="uaddress" th:value="${user.uaddress}"  >
+						</div>
+						<div class="col-md-6 wthree_contact_left_grid">
+							<font size="3"><b> 账户余额：</b></font><input type="text" id="ubalance" readonly="" th:value="${user.ubalance}" value="{$data.ubalance}">
+						</div>
+						<div class="col-md-6 wthree_contact_left_grid">
+							<input type="button" id="btn_add" onclick="goRecharge()" value="充值" style="margin-top:40px;outline: none;padding: 10px 0;font-size: 14px;color: #fff;background: #84C639;width: 46.6%;border: none;  text-transform: uppercase;margin-left: 1.1em; "><br/>	</div>
+							<div class="col-md-6 wthree_contact_left_grid">
+							<font size="3"><b> 密码：</b></font><input type="text" id="upassword"  value="">
+						</div>
+						<div class="clearfix"> </div>
+						<input type="button" name="tj" onclick="updateUser()" value="确认修改用户信息" style="margin-top:40px;outline: none;padding: 10px 0;font-size: 14px;color: #fff;background: #84C639;width: 90%;border: none;  text-transform: uppercase;margin-left: 1.1em; ">
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+<!-- //mail -->
+		</div>
+		<div class="clearfix"></div>
+	</div>
+<!-- //banner -->
+<!-- map -->
+	<div class="map">
+		
+	</div>
+<!-- //map -->
+<!-- newsletter -->
+
+<!-- //newsletter -->
+<!-- footer -->
+<div style="background: #212121">
+		<div class="container">
+			<div class="wthree_footer_copy">
+				<p>Copyright &copy; 2018.旅游系统</p>
+			</div>
+		</div>
+	</div>
+<!-- //footer -->
+<!-- Bootstrap Core JavaScript -->
+
+<script>
+$(document).ready(function(){
+    $(".dropdown").hover(            
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+            $(this).toggleClass('open');        
+        },
+        function() {
+            $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+            $(this).toggleClass('open');       
+        }
+    );
+});
+</script>
+<script type="text/javascript">
+	function chageHead() {
+            $('#change').modal();
+    }
+    function goRecharge() {
+		$("#myModal").modal();
+    }
+    function Recharge(){
+        var val = $("#txt_statu").val();
+        var ival = parseInt(val);//如果变量val是字符类型的数则转换为int类型 如果不是则ival为NaN
+        if(isNaN(ival)){
+            alert("请输入数字");
+            $("#txt_statu").val('');
+        } else if(ival<0){
+            alert("输入的数字应大于0");
+            $("#txt_statu").val('');
+        }else{
+            $.ajax({
+                type:'POST',
+                url:'/user/addRecharge',
+                data:{'addje':$("#txt_statu").val(),'uid':$("#uid").val()},
+                dataType:'JSON',
+                success:function(data){
+                    alert("充值成功");
+                    window.location.reload();
+                }
+            });
+        }
+    }
+    function updateUser(){
+        if ($("#upassword").val()=="") {alert("请输入需要修改的密码")}else
+            $.ajax({
+                type:"POST",
+                url:"/user/updateUser",
+                data:{"uid":$("#uid").val(),"uname":$("#uname").val(),"uemail":$("#uemail").val(),"uaddress":$("#uaddress").val(),"upassword":$("#upassword").val()},
+                dataType:"JSON",
+                success:function(data){
+                    alert("更新成功");
+                    window.location.reload();
+                }
+            });
+
+
+    }
+</script>
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+								
+			$().UItoTop({ easingType: 'easeOutQuart' });
+								
+			});
+	</script>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">账户充值</h4>
+                </div>
+                <div class="modal-body">                 
+                    <div class="form-group">
+                        <label for="txt_statu">充值金额</label>
+                        <input type="text"  class="form-control" id="txt_statu" placeholder="请输入需要充值的金额">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="add_submit"  onclick="Recharge()" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确认充值</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal fade"  id="change" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" >更换头像</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="txt_statu">头像略缩图</label>
+					<img height="200px" width="200px" id="thumbnail" th:src=@{'/static/images/'+${user.uhead}} >
+				</div>
+				<div class="form-group">
+					<input type="file" id="fileio"  onchange="changeImg(this)" >
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+				<button type="button" id="add_submit1"  id="submit"  class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>确认更换</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    function changeImg(f) {
+        var rd = new FileReader();//创建文件读取对象
+        var files = f.files[0];//获取file组件中的文件
+        rd.readAsDataURL(files);//文件读取装换为base64类型
+        rd.onloadend = function(e) {
+            // 加载完毕之后获取结果赋值给img
+            document.getElementById("thumbnail").src = this.result;
+        }
+    }
+
+    $("#submit").click(function () {
+        var formData=new FormData();
+        var img_file=document.getElementById("fileio");
+        var fileObj=img_file.files[0];
+        var uid=$("#uid").val();
+        formData.append("uid",uid);
+        formData.append("imgGo",fileObj);
+        $.ajax({
+            url: "/user/changeUhead",
+            type: "post",
+            data:formData,
+            processData:false,
+            contentType:false,
+            success: function (data) {
+                if (data.status==1){
+                    alert(data.msg);
+                    window.location.reload(); //刷新父亲对象
+                }else {
+                    alert(data.msg);
+                    window.location.reload(); //刷新父亲对象
+                }
+            }
+        });
+    })
+</script>
+</body>
+</html>

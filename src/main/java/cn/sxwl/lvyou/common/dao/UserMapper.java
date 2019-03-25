@@ -5,6 +5,7 @@ import cn.sxwl.lvyou.common.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,7 @@ public interface UserMapper {
      */
     @Select({
         "select",
-        "uid, uname, upassword, uaddress, uemail, ucreatetime, ubalance",
+        "uid, uname, upassword, uaddress, uemail, ucreatetime, ubalance, uhead",
         "from user",
         "where uid = #{uid,jdbcType=INTEGER}"
     })
@@ -69,7 +70,8 @@ public interface UserMapper {
         @Result(column="uaddress", property="uaddress", jdbcType=JdbcType.VARCHAR),
         @Result(column="uemail", property="uemail", jdbcType=JdbcType.VARCHAR),
         @Result(column="ucreatetime", property="ucreatetime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="ubalance", property="ubalance", jdbcType=JdbcType.DECIMAL)
+        @Result(column="ubalance", property="ubalance", jdbcType=JdbcType.DECIMAL),
+        @Result(column="uhead", property="uhead", jdbcType=JdbcType.VARCHAR)
     })
     User selectByPrimaryKey(Integer uid);
 
@@ -93,12 +95,22 @@ public interface UserMapper {
         "set uname = #{uname,jdbcType=VARCHAR},",
           "upassword = #{upassword,jdbcType=VARCHAR},",
           "uaddress = #{uaddress,jdbcType=VARCHAR},",
-          "uemail = #{uemail,jdbcType=VARCHAR},",
-          "ucreatetime = #{ucreatetime,jdbcType=TIMESTAMP},",
-          "ubalance = #{ubalance,jdbcType=DECIMAL}",
+          "uemail = #{uemail,jdbcType=VARCHAR}",
         "where uid = #{uid,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(User record);
+    @Update({
+            "update user",
+            "set ubalance = ubalance + #{addje,jdbcType=INTEGER}",
+            "where uid = #{uid,jdbcType=INTEGER}"
+    })
+    int addUbalance(@Param(value = "addje") Integer addje,@Param(value = "uid") Integer uid);
+    @Update({
+            "update user",
+            "set uhead = #{uhead,jdbcType=VARCHAR}",
+            "where uid = #{uid,jdbcType=INTEGER}"
+    })
+    int updateByUhead(User user);
     @Select("select * from user")
     @Results({
             @Result(column="uid", property="uid", jdbcType=JdbcType.INTEGER, id=true),

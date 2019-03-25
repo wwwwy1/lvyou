@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import sun.plugin2.applet.context.InitialJNLPExecutionContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,6 +90,25 @@ public class UserController {
         ResponseEntity re= userService.userRegister(user,request);
         System.out.println(request.getSession().getAttribute("username"));
         return re;
+    }
+    @GetMapping(value = "/user/userSingle/{uid}")
+    public ModelAndView userSingle(@PathVariable Integer uid){
+        ModelAndView mav=new ModelAndView();
+        mav.setViewName("/user/userSingle");
+        mav.getModel().put("user",userService.selectById(uid));
+        return mav;
+    }
+    @PostMapping(value = "/user/changeUhead")
+    public ResponseEntity changeUhead(MultipartFile imgGo,Integer uid){
+         return   userService.updateUser(imgGo,uid);
+    }
+    @PostMapping(value = "/user/addRecharge")
+    public ResponseEntity addRecharge(Integer addje,Integer uid){
+       return userService.updateUser(addje,uid);
+    }
+    @PostMapping(value = "/user/updateUser")
+    public ResponseEntity updateUserSingle(User user){
+        return userService.updateUser(user);
     }
 
 
