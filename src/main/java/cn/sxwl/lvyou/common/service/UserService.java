@@ -210,4 +210,13 @@ public class UserService {
         }
         return re;
     }
+    public ResponseEntity userLogout(HttpServletRequest request){
+        HttpSession session= request.getSession();
+        session.removeAttribute("userid");
+        session.removeAttribute("username");
+        ResponseEntity re=new ResponseEntity();
+        re.setMsg("退出成功");
+        re.setStatus(1);
+        return re;
+    }
 }

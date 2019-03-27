@@ -48,7 +48,7 @@
 <div id="title">
 	<div class="agileits_header">
 		<div class="w3l_offers">
-			<a href="index">旅游系统</a>
+			<a href="/user/index">旅游系统</a>
 		</div>
 		<div class="w3l_search">
 			<form action="searchlist" method="post">
@@ -149,14 +149,14 @@
 	<div class="logo_products">
 		<div class="container">
 			<div class="w3ls_logo_products_left">
-				<h1><a href="index"><span>lvyou</span> 旅游</a></h1>
+				<h1><a href="/user/index"><span>lvyou</span> 旅游</a></h1>
 			</div>
 			<div class="w3ls_logo_products_left1">
 				<ul class="special_items">
-					<li><a href="index">首页</a><i>/</i></li>
-					<li><a href="scenic">景点</a><i>/</i></li>
-					<li><a href="hotel">酒店</a><i>/</i></li>
-					<li><a href="order">订单</a></li>
+					<li><a href="/user/index">首页</a><i>/</i></li>
+					<li><a href="/user/scenicList">景点</a><i>/</i></li>
+					<li><a href="/user/businessList">酒店</a><i>/</i></li>
+					<li><a href="/user/order">订单</a></li>
 				</ul>
 			</div>
 			<div class="w3ls_logo_products_left1">
@@ -202,6 +202,18 @@
                     }
 
                 })
+            }
+            function out() {
+                $.ajax({
+                    type:"POST",
+                    url:"/user/logout",
+                    data:{"uid":$("#uid").val()},
+                    dataType:"JSON",
+                    success:function(data){
+                        alert("退出成功");
+                        window.location.replace("/user/index");
+                    }
+                });
             }
             function toRegister() {
                 var flag=0;
@@ -253,7 +265,7 @@
 	<div class="products-breadcrumb">
 		<div class="container">
 			<ul>
-				<li><i class="fa fa-home" aria-hidden="true"></i><a href="index">首页</a><span>|</span></li>
+				<li><i class="fa fa-home" aria-hidden="true"></i><a href="/user/index">首页</a><span>|</span></li>
 				<li>酒店详情</li>
 			</ul>
 		</div>
@@ -268,10 +280,28 @@
 			   <!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 					<ul class="nav navbar-nav nav_1">
-						<li><a href="index">首 页</a></li>
-						<li><a href="scenic">景 点</a></li>
-						<li><a href="hotel">酒 店</a></li>
-						<li><a href="order">订 单</a></li>
+						<li><a href="/user/index">首 页</a></li>
+						<li class="dropdown mega-dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">景点<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="/user/scenicList">所有景点</a></li>
+										<li><a href="/user/scenicRegion">按地区查看</a></li>
+									</ul>
+								</div>
+							</div></li>
+						<li class="dropdown mega-dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">酒店<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="/user/businessList">所有酒店</a></li>
+										<li><a href="/user/businessRegion">按地区查看</a></li>
+									</ul>
+								</div>
+							</div></li>
+						<li><a href="/user/order">订 单</a></li>
 					</ul>
 				 </div><!-- /.navbar-collapse -->
 			</nav>

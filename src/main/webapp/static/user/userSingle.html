@@ -125,10 +125,10 @@
 			</div>
 			<div class="w3ls_logo_products_left1">
 				<ul class="special_items">
-					<li><a href="index">首页</a><i>/</i></li>
-					<li><a href="scenic">景点</a><i>/</i></li>
-					<li><a href="hotel">酒店</a><i>/</i></li>
-					<li><a href="order">订单</a></li>
+					<li><a href="/user/index">首页</a><i>/</i></li>
+					<li><a href="/user/scenicList">景点</a><i>/</i></li>
+					<li><a href="/user/businessList">酒店</a><i>/</i></li>
+					<li><a href="/user/order">订单</a></li>
 				</ul>
 			</div>
 			<div class="w3ls_logo_products_left1">
@@ -161,10 +161,28 @@
 			   <!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 					<ul class="nav navbar-nav nav_1">
-						<li><a href="index">首 页</a></li>
-						<li><a href="scenic">景 点</a></li>
-						<li><a href="hotel">酒 店</a></li>
-						<li><a href="order">订 单</a></li>
+						<li><a href="/user/index">首 页</a></li>
+						<li class="dropdown mega-dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">景点<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="/user/scenicList">所有景点</a></li>
+										<li><a href="/user/scenicRegion">按地区查看</a></li>
+									</ul>
+								</div>
+							</div></li>
+						<li class="dropdown mega-dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">酒店<span class="caret"></span></a>
+							<div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+								<div class="w3ls_vegetables">
+									<ul>
+										<li><a href="/user/businessList">所有酒店</a></li>
+										<li><a href="/user/businessRegion">按地区查看</a></li>
+									</ul>
+								</div>
+							</div></li>
+						<li><a href="/user/order">订 单</a></li>
 					</ul>
 				 </div><!-- /.navbar-collapse -->
 			</nav>
@@ -285,8 +303,18 @@ $(document).ready(function(){
                     window.location.reload();
                 }
             });
-
-
+    }
+    function out() {
+        $.ajax({
+            type:"POST",
+            url:"/user/logout",
+            data:{"uid":$("#uid").val()},
+            dataType:"JSON",
+            success:function(data){
+                alert("退出成功");
+                window.location.replace("/user/index");
+            }
+        });
     }
 </script>
 <!-- here stars scrolling icon -->

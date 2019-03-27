@@ -110,7 +110,10 @@ public class UserController {
     public ResponseEntity updateUserSingle(User user){
         return userService.updateUser(user);
     }
-
+    @PostMapping(value = "/user/logout")
+    public ResponseEntity userLogout(HttpServletRequest request){
+       return userService.userLogout(request);
+    }
 
 
 }
